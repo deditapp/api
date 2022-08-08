@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-export interface DocumentEntity {
+export interface DocumentDto {
 	id: string;
 	title: string;
 	tags: string[];
@@ -18,10 +18,12 @@ export interface DocumentEntity {
 	ownerId: string;
 }
 
-export interface DocumentCreateResponse {
-	success: string;
-	error?: string;
-	document?: DocumentEntity;
+export interface DocumentUpdateDto {
+	title?: string;
+	tags?: string[];
+	createdAt?: string;
+	updatedAt?: string;
+	ownerId?: string;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -244,39 +246,35 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title Dedit Backend API
- * @version 1.0
+ * @title Dedit API
+ * @version 1
  * @contact
  *
- * Provides an interface to the backend Dedit services.
+ * The API for interfacing with Dedit services.
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
 	v1 = {
 		/**
 		 * No description
 		 *
-		 * @tags documents
-		 * @name FindManyDocuments
-		 * @summary Fetch a list of all documents this user has access to.
+		 * @name DocumentsControllerV1FindMany
 		 * @request GET:/v1/documents
 		 */
-		findManyDocuments: (params: RequestParams = {}) =>
-			this.request<DocumentEntity[], void>({
+		documentsControllerV1FindMany: (params: RequestParams = {}) =>
+			this.request<any, DocumentDto[]>({
 				path: `/v1/documents`,
 				method: "GET",
-				format: "json",
 				...params,
 			}),
 
 		/**
 		 * No description
 		 *
-		 * @tags documents
-		 * @name CreateDocument
+		 * @name DocumentsControllerV1Create
 		 * @request POST:/v1/documents
 		 */
-		createDocument: (params: RequestParams = {}) =>
-			this.request<DocumentCreateResponse, void>({
+		documentsControllerV1Create: (params: RequestParams = {}) =>
+			this.request<string, any>({
 				path: `/v1/documents`,
 				method: "POST",
 				format: "json",
@@ -286,15 +284,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @tags documents
-		 * @name FindOneDocument
-		 * @summary Find a single document.
+		 * @name DocumentsControllerV1FindOne
 		 * @request GET:/v1/documents/{documentId}
 		 */
-		findOneDocument: (documentId: string, params: RequestParams = {}) =>
-			this.request<DocumentEntity, void>({
+		documentsControllerV1FindOne: (documentId: string, params: RequestParams = {}) =>
+			this.request<any, DocumentDto>({
 				path: `/v1/documents/${documentId}`,
 				method: "GET",
+				...params,
+			}),
+
+		/**
+		 * No description
+		 *
+		 * @name DocumentsControllerV1Update
+		 * @request PATCH:/v1/documents/{documentId}
+		 */
+		documentsControllerV1Update: (
+			documentId: string,
+			data: DocumentUpdateDto,
+			params: RequestParams = {}
+		) =>
+			this.request<string, any>({
+				path: `/v1/documents/${documentId}`,
+				method: "PATCH",
+				body: data,
+				type: ContentType.Json,
 				format: "json",
 				...params,
 			}),
@@ -302,24 +317,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @tags documents
-		 * @name UpdateDocument
-		 * @request PATCH:/v1/documents/{documentId}
-		 */
-		updateDocument: (documentId: string, params: RequestParams = {}) =>
-			this.request<void, any>({
-				path: `/v1/documents/${documentId}`,
-				method: "PATCH",
-				...params,
-			}),
-
-		/**
-		 * No description
-		 *
-		 * @name FetchCurrentUser
+		 * @name UsersControllerV1Me
 		 * @request GET:/v1/me
 		 */
-		fetchCurrentUser: (params: RequestParams = {}) =>
+		usersControllerV1Me: (params: RequestParams = {}) =>
 			this.request<void, any>({
 				path: `/v1/me`,
 				method: "GET",
@@ -329,10 +330,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @name Login
+		 * @name UsersControllerV1Login
 		 * @request POST:/v1/login
 		 */
-		login: (params: RequestParams = {}) =>
+		usersControllerV1Login: (params: RequestParams = {}) =>
 			this.request<void, any>({
 				path: `/v1/login`,
 				method: "POST",
@@ -342,10 +343,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @name RedirectLogin
+		 * @name UsersControllerV1FinalizeLogin
 		 * @request POST:/v1/login/redirect
 		 */
-		redirectLogin: (params: RequestParams = {}) =>
+		usersControllerV1FinalizeLogin: (params: RequestParams = {}) =>
 			this.request<void, any>({
 				path: `/v1/login/redirect`,
 				method: "POST",
