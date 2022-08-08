@@ -4,6 +4,7 @@
 	"description": "Generated API client for the Dedit API.",
 	"main": "src/index.ts",
 	"scripts": {
+		"prepare": "tsc",
 		"generate": "pnpm exec swagger-typescript-api -p ./swagger.json -o ./src -n index.ts"
 	},
 	"keywords": [],
@@ -11,6 +12,7 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@pnpm/make-dedicated-lockfile": "^0.3.19",
-		"swagger-typescript-api": "^9.3.1"
+		"swagger-typescript-api": "^9.3.1",
+		"typescript": "^4.7.4"
 	}
 }
