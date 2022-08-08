@@ -2,7 +2,7 @@
 	"name": "@deditapp/api",
 	"version": "1.0.0",
 	"description": "Generated API client for the Dedit API.",
-	"main": "src/index.ts",
+	"main": "dist/index.js",
 	"scripts": {
 		"prepare": "tsc",
 		"generate": "pnpm exec swagger-typescript-api -p ./swagger.json -o ./src -n index.ts"
