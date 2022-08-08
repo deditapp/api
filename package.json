@@ -1,0 +1,15 @@
+{
+	"name": "@deditapp/api",
+	"version": "1.0.0",
+	"description": "Generated API client for the Dedit API.",
+	"main": "index.js",
+	"scripts": {
+		"generate": "pnpm exec swagger-typescript-api -p ./swagger.json -o ./src -n index.ts"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"swagger-typescript-api": "^9.3.1"
+	}
+}
