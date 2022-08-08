@@ -18,7 +18,7 @@ export interface DocumentDto {
 	ownerId: string;
 }
 
-export interface DocumentUpdateDto {
+export interface UpdateDocumentPayloadDto {
 	title?: string;
 	tags?: string[];
 	createdAt?: string;
@@ -302,7 +302,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		 */
 		documentsControllerV1Update: (
 			documentId: string,
-			data: DocumentUpdateDto,
+			data: UpdateDocumentPayloadDto,
 			params: RequestParams = {}
 		) =>
 			this.request<string, any>({
