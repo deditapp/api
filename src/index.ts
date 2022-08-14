@@ -28,19 +28,7 @@ export interface UpdateDocumentPayloadDto {
 
 export interface AnyBlockDto {
 	id?: string;
-	type:
-		| "Root"
-		| "Ref"
-		| "Text"
-		| "Link"
-		| "Heading"
-		| "Paragraph"
-		| "Quote"
-		| "List"
-		| "Table"
-		| "Image"
-		| "Alert"
-		| "Group";
+	type: number;
 	children?: AnyBlockDto[];
 	data?: object;
 }
