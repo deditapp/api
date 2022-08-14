@@ -26,6 +26,11 @@ export interface UpdateDocumentPayloadDto {
 	ownerId?: string;
 }
 
+export interface UpdateRootBlockDto {
+	children?: string[];
+	tags?: string[];
+}
+
 export type QueryParamsType = Record<string | number, any>;
 export type ResponseFormat = keyof Omit<Body, "body" | "bodyUsed">;
 
@@ -307,6 +312,40 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		) =>
 			this.request<string, any>({
 				path: `/v1/documents/${documentId}`,
+				method: "PATCH",
+				body: data,
+				type: ContentType.Json,
+				format: "json",
+				...params,
+			}),
+
+		/**
+		 * No description
+		 *
+		 * @name DocumentsControllerV1FetchDocumentContent
+		 * @request GET:/v1/documents/{documentId}/content
+		 */
+		documentsControllerV1FetchDocumentContent: (documentId: string, params: RequestParams = {}) =>
+			this.request<string, any>({
+				path: `/v1/documents/${documentId}/content`,
+				method: "GET",
+				format: "json",
+				...params,
+			}),
+
+		/**
+		 * No description
+		 *
+		 * @name DocumentsControllerV1UpdateDocumentContent
+		 * @request PATCH:/v1/documents/{documentId}/content
+		 */
+		documentsControllerV1UpdateDocumentContent: (
+			documentId: string,
+			data: UpdateRootBlockDto,
+			params: RequestParams = {}
+		) =>
+			this.request<string, any>({
+				path: `/v1/documents/${documentId}/content`,
 				method: "PATCH",
 				body: data,
 				type: ContentType.Json,
