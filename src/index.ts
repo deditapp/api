@@ -26,8 +26,27 @@ export interface UpdateDocumentPayloadDto {
 	ownerId?: string;
 }
 
+export interface AnyBlockDto {
+	id?: string;
+	type:
+		| "Root"
+		| "Ref"
+		| "Text"
+		| "Link"
+		| "Heading"
+		| "Paragraph"
+		| "Quote"
+		| "List"
+		| "Table"
+		| "Image"
+		| "Alert"
+		| "Group";
+	children?: AnyBlockDto[];
+	data?: object;
+}
+
 export interface UpdateRootBlockDto {
-	children?: string[];
+	children?: AnyBlockDto[];
 	tags?: string[];
 }
 
