@@ -375,7 +375,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		 * @request GET:/v1/documents/{documentId}/revisions/latest
 		 */
 		getLatestDocumentRevision: (documentId: string, params: RequestParams = {}) =>
-			this.request<DocumentRevisionDto[], any>({
+			this.request<DocumentRevisionDto, any>({
 				path: `/v1/documents/${documentId}/revisions/latest`,
 				method: "GET",
 				format: "json",
