@@ -26,11 +26,18 @@ export interface UpdateDocumentPayloadDto {
 	ownerId?: string;
 }
 
+export interface RootBlockDto {
+	id: string;
+	type: number;
+	children: any[];
+	tags: string[];
+}
+
 export interface DocumentRevisionDto {
 	id: string;
 	documentId: string;
 	createdAt: string;
-	content: any[];
+	content: RootBlockDto;
 }
 
 export interface CreateRootBlockDto {
