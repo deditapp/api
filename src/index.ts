@@ -26,6 +26,13 @@ export interface UpdateDocumentPayloadDto {
 	ownerId?: string;
 }
 
+export interface DocumentRevisionDto {
+	id: string;
+	documentId: string;
+	createdAt: string;
+	content: any[];
+}
+
 export interface CreateRootBlockDto {
 	type: number;
 	children: any[];
@@ -292,12 +299,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @tags revisions
-		 * @name GetDocumentRevisions
+		 * @tags documents
+		 * @name GetDocument
 		 * @request GET:/v1/documents/{documentId}
 		 */
-		getDocumentRevisions: (documentId: string, params: RequestParams = {}) =>
-			this.request<void, any>({
+		getDocument: (documentId: string, params: RequestParams = {}) =>
+			this.request<any, DocumentDto>({
 				path: `/v1/documents/${documentId}`,
 				method: "GET",
 				...params,
@@ -328,19 +335,50 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		 * No description
 		 *
 		 * @tags revisions
+		 * @name GetDocumentRevisions
+		 * @request GET:/v1/documents/{documentId}/revisions
+		 */
+		getDocumentRevisions: (documentId: string, params: RequestParams = {}) =>
+			this.request<DocumentRevisionDto[], any>({
+				path: `/v1/documents/${documentId}/revisions`,
+				method: "GET",
+				format: "json",
+				...params,
+			}),
+
+		/**
+		 * No description
+		 *
+		 * @tags revisions
 		 * @name CreateDocumentRevision
-		 * @request POST:/v1/documents/{documentId}
+		 * @request POST:/v1/documents/{documentId}/revisions
 		 */
 		createDocumentRevision: (
 			documentId: string,
 			data: CreateRootBlockDto,
 			params: RequestParams = {}
 		) =>
-			this.request<void, any>({
-				path: `/v1/documents/${documentId}`,
+			this.request<DocumentRevisionDto, any>({
+				path: `/v1/documents/${documentId}/revisions`,
 				method: "POST",
 				body: data,
 				type: ContentType.Json,
+				format: "json",
+				...params,
+			}),
+
+		/**
+		 * No description
+		 *
+		 * @tags revisions
+		 * @name GetLatestDocumentRevision
+		 * @request GET:/v1/documents/{documentId}/revisions/latest
+		 */
+		getLatestDocumentRevision: (documentId: string, params: RequestParams = {}) =>
+			this.request<DocumentRevisionDto[], any>({
+				path: `/v1/documents/${documentId}/revisions/latest`,
+				method: "GET",
+				format: "json",
 				...params,
 			}),
 
