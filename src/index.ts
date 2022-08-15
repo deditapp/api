@@ -26,6 +26,12 @@ export interface UpdateDocumentPayloadDto {
 	ownerId?: string;
 }
 
+export interface RootBlockDto {
+	id: string;
+	type: number;
+	children: any[];
+}
+
 export interface AnyBlockDto {
 	id?: string;
 	type: number;
@@ -286,7 +292,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		 * @request POST:/v1/documents
 		 */
 		documentsControllerV1Create: (params: RequestParams = {}) =>
-			this.request<string, any>({
+			this.request<DocumentDto, any>({
 				path: `/v1/documents`,
 				method: "POST",
 				format: "json",
@@ -317,7 +323,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 			data: UpdateDocumentPayloadDto,
 			params: RequestParams = {}
 		) =>
-			this.request<string, any>({
+			this.request<DocumentDto, any>({
 				path: `/v1/documents/${documentId}`,
 				method: "PATCH",
 				body: data,
@@ -333,7 +339,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		 * @request GET:/v1/documents/{documentId}/content
 		 */
 		documentsControllerV1FetchDocumentContent: (documentId: string, params: RequestParams = {}) =>
-			this.request<string, any>({
+			this.request<RootBlockDto, any>({
 				path: `/v1/documents/${documentId}/content`,
 				method: "GET",
 				format: "json",
@@ -351,7 +357,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 			data: UpdateRootBlockDto,
 			params: RequestParams = {}
 		) =>
-			this.request<string, any>({
+			this.request<RootBlockDto, any>({
 				path: `/v1/documents/${documentId}/content`,
 				method: "PATCH",
 				body: data,
