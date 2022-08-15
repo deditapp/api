@@ -26,22 +26,10 @@ export interface UpdateDocumentPayloadDto {
 	ownerId?: string;
 }
 
-export interface RootBlockDto {
-	id: string;
+export interface CreateRootBlockDto {
 	type: number;
 	children: any[];
-}
-
-export interface AnyBlockDto {
-	id?: string;
-	type: number;
-	children?: AnyBlockDto[];
-	data?: object;
-}
-
-export interface UpdateRootBlockDto {
-	children?: AnyBlockDto[];
-	tags?: string[];
+	tags: string[];
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -275,10 +263,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @name DocumentsControllerV1FindMany
+		 * @tags documents
+		 * @name GetDocumentsForUser
 		 * @request GET:/v1/documents
 		 */
-		documentsControllerV1FindMany: (params: RequestParams = {}) =>
+		getDocumentsForUser: (params: RequestParams = {}) =>
 			this.request<any, DocumentDto[]>({
 				path: `/v1/documents`,
 				method: "GET",
@@ -288,11 +277,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @name DocumentsControllerV1Create
+		 * @tags documents
+		 * @name CreateDocument
 		 * @request POST:/v1/documents
 		 */
-		documentsControllerV1Create: (params: RequestParams = {}) =>
-			this.request<DocumentDto, any>({
+		createDocument: (params: RequestParams = {}) =>
+			this.request<DocumentDto, void>({
 				path: `/v1/documents`,
 				method: "POST",
 				format: "json",
@@ -302,11 +292,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @name DocumentsControllerV1FindOne
+		 * @tags revisions
+		 * @name GetDocumentRevisions
 		 * @request GET:/v1/documents/{documentId}
 		 */
-		documentsControllerV1FindOne: (documentId: string, params: RequestParams = {}) =>
-			this.request<any, DocumentDto>({
+		getDocumentRevisions: (documentId: string, params: RequestParams = {}) =>
+			this.request<void, any>({
 				path: `/v1/documents/${documentId}`,
 				method: "GET",
 				...params,
@@ -315,15 +306,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @name DocumentsControllerV1Update
+		 * @tags documents
+		 * @name UpdateDocument
 		 * @request PATCH:/v1/documents/{documentId}
 		 */
-		documentsControllerV1Update: (
+		updateDocument: (
 			documentId: string,
 			data: UpdateDocumentPayloadDto,
 			params: RequestParams = {}
 		) =>
-			this.request<DocumentDto, any>({
+			this.request<DocumentDto, void>({
 				path: `/v1/documents/${documentId}`,
 				method: "PATCH",
 				body: data,
@@ -335,34 +327,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
 		/**
 		 * No description
 		 *
-		 * @name DocumentsControllerV1FetchDocumentContent
-		 * @request GET:/v1/documents/{documentId}/content
+		 * @tags revisions
+		 * @name CreateDocumentRevision
+		 * @request POST:/v1/documents/{documentId}
 		 */
-		documentsControllerV1FetchDocumentContent: (documentId: string, params: RequestParams = {}) =>
-			this.request<RootBlockDto, any>({
-				path: `/v1/documents/${documentId}/content`,
-				method: "GET",
-				format: "json",
-				...params,
-			}),
-
-		/**
-		 * No description
-		 *
-		 * @name DocumentsControllerV1UpdateDocumentContent
-		 * @request PATCH:/v1/documents/{documentId}/content
-		 */
-		documentsControllerV1UpdateDocumentContent: (
+		createDocumentRevision: (
 			documentId: string,
-			data: UpdateRootBlockDto,
+			data: CreateRootBlockDto,
 			params: RequestParams = {}
 		) =>
-			this.request<RootBlockDto, any>({
-				path: `/v1/documents/${documentId}/content`,
-				method: "PATCH",
+			this.request<void, any>({
+				path: `/v1/documents/${documentId}`,
+				method: "POST",
 				body: data,
 				type: ContentType.Json,
-				format: "json",
 				...params,
 			}),
 
